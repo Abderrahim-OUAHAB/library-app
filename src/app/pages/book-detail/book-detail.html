@@ -1,0 +1,26 @@
+@if (book) {
+  <div style="padding: 24px;">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ book.title }}</mat-card-title>
+        <mat-card-subtitle>{{ book.author }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Catégorie : {{ book.category }}</p>
+        <p>Année : {{ book.year }}</p>
+        <p>{{ book.available ? 'Disponible' : 'Emprunté' }}</p>
+        <p>Note :</p>
+<app-star-rating
+  [rating]="book.rating ?? 0"
+  (ratingChange)="onRatingChange($event)">
+</app-star-rating>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="goBack()">Retour</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+} @else {
+  <p style="padding:24px;">Livre introuvable.</p>
+  <button mat-button routerLink="/books">Retour à la liste</button>
+}
