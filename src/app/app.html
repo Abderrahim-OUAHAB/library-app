@@ -32,6 +32,8 @@ s4 -->
   <a mat-button routerLink="/books" routerLinkActive="active-link">Livres</a>
   <a mat-button routerLink="/stats" routerLinkActive="active-link">Statistiques</a>
   <span>{{ bookService.bookCount }} livres</span>
+  <button mat-raised-button (click)="openAddDialog()">Ajouter livre</button>
+  <a mat-button routerLink="/shelves" routerLinkActive="active-link">Étagères</a>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

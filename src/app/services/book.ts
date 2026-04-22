@@ -44,4 +44,7 @@ export class BookService {
   getBookById(id: number): Book | undefined {
     return this.books$.value.find(b => b.id === id);
   }
+  get booksValue(): Book[] {
+  return this.books$.value;
+}
 }

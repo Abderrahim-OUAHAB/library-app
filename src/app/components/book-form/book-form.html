@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Ajouter un livre</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" style="width:100%">
+    <mat-label>Titre</mat-label>
+    <input matInput [(ngModel)]="book.title">
+  </mat-form-field>
+  <mat-form-field appearance="fill" style="width:100%">
+    <mat-label>Auteur</mat-label>
+    <input matInput [(ngModel)]="book.author">
+  </mat-form-field>
+  <mat-form-field appearance="fill" style="width:100%">
+    <mat-label>Catégorie</mat-label>
+    <mat-select [(ngModel)]="book.category">
+      <mat-option value="Roman">Roman</mat-option>
+      <mat-option value="Informatique">Informatique</mat-option>
+      <mat-option value="Science">Science</mat-option>
+      <mat-option value="BD">BD</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" style="width:100%">
+  <mat-label>URL de couverture (optionnel)</mat-label>
+  <input matInput [(ngModel)]="book.cover">
+</mat-form-field>
+  <mat-form-field appearance="fill" style="width:100%">
+    <mat-label>Année</mat-label>
+    <input matInput type="number" [(ngModel)]="book.year">
+  </mat-form-field>
+  <mat-checkbox [(ngModel)]="book.available">Disponible</mat-checkbox>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="submit()">Ajouter</button>
+</mat-dialog-actions>

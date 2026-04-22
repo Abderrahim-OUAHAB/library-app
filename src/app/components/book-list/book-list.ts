@@ -79,7 +79,7 @@ export class BookList {
   get displayedBooks(): Book[] {
     return this.showOnlyAvailable
       ? this.bookService.getAvailableBooks
-      : this.bookService['books$'].value;
+      : this.bookService.booksValue;
   }
 
   deleteBook(id: number): void {
