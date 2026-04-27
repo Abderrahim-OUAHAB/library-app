@@ -6,7 +6,7 @@ import { Book } from '../book';
 export class BookService {
   private books: Book[] = [
     { id: 1, title: 'Clean Code', author: 'Robert C. Martin', category: 'Informatique', year: 2008, available: true },
-    { id: 2, title: 'Le Petit Prince', author: 'Antoine de Saint-Exupéry', category: 'Roman', year: 1943, available: false },
+    { id: 2, title: 'Atomic habits', author: 'James Clear', category: 'Roman', year: 1943, available: false ,cover:'https://pictures.abebooks.com/isbn/9780735211292-fr.jpg' },
     { id: 3, title: 'Dune', author: 'Frank Herbert', category: 'Science-Fiction' as any, year: 1965, available: true },
     { id: 4, title: 'Harry Potter', author: 'J.K. Rowling', category: 'Fantasy' as any, year: 1997, available: true },
     { id: 5, title: 'Le Seigneur des Anneaux', author: 'Tolkien', category: 'Fantasy' as any, year: 1954, available: false },
