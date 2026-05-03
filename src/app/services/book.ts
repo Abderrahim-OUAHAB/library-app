@@ -4,15 +4,13 @@ import { Book } from '../book';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
-  private books: Book[] = [
-    { id: 1, title: 'Clean Code', author: 'Robert C. Martin', category: 'Informatique', year: 2008, available: true },
-    { id: 2, title: 'Atomic habits', author: 'James Clear', category: 'Roman', year: 1943, available: false ,cover:'https://pictures.abebooks.com/isbn/9780735211292-fr.jpg' },
-    { id: 3, title: 'Dune', author: 'Frank Herbert', category: 'Science-Fiction' as any, year: 1965, available: true },
-    { id: 4, title: 'Harry Potter', author: 'J.K. Rowling', category: 'Fantasy' as any, year: 1997, available: true },
-    { id: 5, title: 'Le Seigneur des Anneaux', author: 'Tolkien', category: 'Fantasy' as any, year: 1954, available: false },
-  ];
+  private readonly storageKey = 'library-app-books';
 
-  private books$ = new BehaviorSubject<Book[]>(this.books);
+  private books$ = new BehaviorSubject<Book[]>([]);
+
+  constructor() {
+    this.books$.next(this.loadFromStorage());
+  }
 
   getBooks() {
     return this.books$.asObservable();
@@ -29,22 +27,43 @@ export class BookService {
   addBook(book: Book): void {
     const updated = [...this.books$.value, book];
     this.books$.next(updated);
+    this.saveToStorage(updated);
   }
 
   deleteBook(id: number): void {
     const updated = this.books$.value.filter(b => b.id !== id);
     this.books$.next(updated);
+    this.saveToStorage(updated);
   }
 
   updateBook(updated: Book): void {
     const books = this.books$.value.map(b => b.id === updated.id ? updated : b);
     this.books$.next(books);
+    this.saveToStorage(books);
   }
 
   getBookById(id: number): Book | undefined {
     return this.books$.value.find(b => b.id === id);
   }
   get booksValue(): Book[] {
-  return this.books$.value;
-}
+    return this.books$.value;
+  }
+
+  private saveToStorage(books: Book[]): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(books));
+  }
+
+  private loadFromStorage(): Book[] {
+    const data = localStorage.getItem(this.storageKey);
+    if (!data) {
+      return [];
+    }
+
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
 }

@@ -1,16 +1,18 @@
-<h2 mat-dialog-title>Ajouter un livre</h2>
-<mat-dialog-content>
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier un livre' : 'Ajouter un livre' }}</h2>
+<mat-dialog-content [formGroup]="bookForm">
   <mat-form-field appearance="fill" style="width:100%">
     <mat-label>Titre</mat-label>
-    <input matInput [(ngModel)]="book.title">
+    <input matInput formControlName="title">
+    <mat-error *ngIf="bookForm.get('title')?.hasError('required')">Le titre est requis</mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" style="width:100%">
     <mat-label>Auteur</mat-label>
-    <input matInput [(ngModel)]="book.author">
+    <input matInput formControlName="author">
+    <mat-error *ngIf="bookForm.get('author')?.hasError('required')">L'auteur est requis</mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" style="width:100%">
     <mat-label>Catégorie</mat-label>
-    <mat-select [(ngModel)]="book.category">
+    <mat-select formControlName="category">
       <mat-option value="Roman">Roman</mat-option>
       <mat-option value="Informatique">Informatique</mat-option>
       <mat-option value="Science">Science</mat-option>
@@ -19,15 +21,17 @@
   </mat-form-field>
   <mat-form-field appearance="fill" style="width:100%">
   <mat-label>URL de couverture (optionnel)</mat-label>
-  <input matInput [(ngModel)]="book.cover">
+  <input matInput formControlName="cover">
 </mat-form-field>
   <mat-form-field appearance="fill" style="width:100%">
     <mat-label>Année</mat-label>
-    <input matInput type="number" [(ngModel)]="book.year">
+    <input matInput type="number" formControlName="year">
   </mat-form-field>
-  <mat-checkbox [(ngModel)]="book.available">Disponible</mat-checkbox>
+  <mat-checkbox formControlName="available">Disponible</mat-checkbox>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="cancel()">Annuler</button>
-  <button mat-raised-button color="primary" (click)="submit()">Ajouter</button>
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="bookForm.invalid">
+    {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+  </button>
 </mat-dialog-actions>

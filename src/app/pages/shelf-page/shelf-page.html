@@ -1,29 +1,67 @@
 <div style="padding: 24px;">
   <h2>Étagères</h2>
-  <div style="display: flex; gap: 24px; flex-wrap: wrap;">
-    @for (category of categories; track category) {
-      <div style="min-width: 200px; background: #f5f5f5; border-radius: 8px; padding: 12px;">
-        <h3>{{ category }}</h3>
-        <div
-          cdkDropList
-          [id]="category"
-          [cdkDropListConnectedTo]="categories"
-          [cdkDropListData]="shelves[category]"
-          (cdkDropListDropped)="drop($event, category)"
-          style="min-height: 60px;">
-          @for (book of shelves[category]; track book.id) {
-            <mat-card cdkDrag style="margin-bottom: 8px; cursor: grab;">
-              @if (book.cover) {
-                <img [src]="book.cover" alt="couverture" style="width:100%; object-fit:cover; border-radius:4px;">
-              } @else {
-                <mat-card-header>
-                  <mat-card-title style="font-size: 14px;">{{ book.title }}</mat-card-title>
-                </mat-card-header>
-              }
-            </mat-card>
-          }
-        </div>
-      </div>
-    }
+
+  <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+    <mat-form-field style="min-width: 260px;">
+      <mat-label>Rechercher un livre</mat-label>
+      <input
+        matInput
+        #searchInput
+        [value]="search$.value"
+        (keyup)="onSearchKeyup(searchInput.value)"
+        placeholder="Titre du livre"
+      />
+    </mat-form-field>
+
+    <mat-form-field style="min-width: 200px;">
+      <mat-label>Trier par</mat-label>
+      <mat-select [value]="sortBy$.value" (valueChange)="onSortChange($event)">
+        @for (field of sortFields; track field.value) {
+          <mat-option [value]="field.value">{{ field.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-slide-toggle [checked]="onlyAvailable$.value" (change)="onAvailabilityToggle($event.checked)">
+      Disponibles uniquement
+    </mat-slide-toggle>
+
+    <button mat-stroked-button type="button" (click)="resetFilters(); searchInput.value = ''">
+      Reset recherche & tri
+    </button>
   </div>
+
+  @if (vm$ | async; as vm) {
+    <p style="margin: 8px 0 16px;">
+      {{ vm.filteredCount }} livre(s) affiché(s) sur {{ vm.totalCount }}
+    </p>
+
+    <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+      @for (category of categories; track category) {
+        <div style="min-width: 200px; background: #f5f5f5; border-radius: 8px; padding: 12px;">
+          <h3>{{ category }}</h3>
+          <div
+            cdkDropList
+            [id]="category"
+            [cdkDropListConnectedTo]="categories"
+            [cdkDropListData]="vm.shelves[category]"
+            (cdkDropListDropped)="drop($event, category)"
+            style="min-height: 60px;"
+          >
+            @for (book of vm.shelves[category]; track book.id) {
+              <mat-card cdkDrag style="margin-bottom: 8px; cursor: grab;">
+                @if (book.cover) {
+                  <img [src]="book.cover" alt="couverture" style="width:100%; object-fit:cover; border-radius:4px;">
+                } @else {
+                  <mat-card-header>
+                    <mat-card-title style="font-size: 14px;">{{ book.title }}</mat-card-title>
+                  </mat-card-header>
+                }
+              </mat-card>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>
